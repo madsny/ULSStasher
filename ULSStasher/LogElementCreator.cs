@@ -28,7 +28,7 @@ namespace ULSStasher
         public LogElement Create()
         {
             var firstLine = _lines.First();
-            var processnamePid = ParseProcessNameAndPid(firstLine.GetProcess());
+            var processnamePid = firstLine.GetProcessNameAndPid();
             return new LogElement
             {
                 Date = firstLine.GetTime(),
@@ -44,16 +44,6 @@ namespace ULSStasher
             };
         }
 
-        private Tuple<string,string> ParseProcessNameAndPid(string getProcess)
-        {
-            var processName = string.Empty;
-            var processId = string.Empty;
-            var parts = getProcess.Split(new[] {'(', ')'}, StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length > 0)
-                processName = parts[0];
-            if (parts.Length > 1)
-                processId = parts[1];
-            return new Tuple<string, string>(processName, processId);
-        }
+
     }
 }

@@ -3,36 +3,39 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ULSStasher
 {
-    class LineProvider
+    public class LineProvider
     {
+        private readonly IFileSystem _fileSystem;
+
+        public LineProvider(IFileSystem fileSystem)
+        {
+            _fileSystem = fileSystem;
+        }
+
+
         private int _lineNumber;
 
         public IEnumerable<LogLine> GetLines()
         {
-            int index = 0;
-            var filename = @"E:\temp\logs\test.log";
-            using (var inStream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            var files = _fileSystem.GetFiles(@"e:\temp\logs\");
+
+            foreach (var filename in files)
             {
-                using (StreamReader reader = new StreamReader(inStream))
+                int index = 0;
+                foreach (var rawLine in _fileSystem.GetLines(filename.FullName))
                 {
-                    while (reader.Peek() >= 0)
-                    {
-                        var rawLine = reader.ReadLine();
-                        ++index;
-                        if (_lineNumber == 0 || index > _lineNumber)
-                        {
-                            var line = CreateLogLine(rawLine, index);
-                            if (line != null)
-                                yield return line;
-                        }
-                    }
+                    index++;
+                    var line = CreateLogLine(rawLine, index);
+                    if (line != null)
+                        yield return line;
+
                 }
             }
-            Console.WriteLine("Done reading {0} up to line {1}", filename, _lineNumber);
         }
 
         private LogLine CreateLogLine(string line, int linenumber)

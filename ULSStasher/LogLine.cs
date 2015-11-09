@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace ULSStasher
 {
-    internal class LogLine
+    public class LogLine
     {
         public int Linenumber { get; private set; }
         private readonly string[] _parts;
@@ -93,6 +93,18 @@ namespace ULSStasher
         public string GetMessage()
         {
             return GetPart(MessageIdx);
+        }
+
+        public Tuple<string, string> GetProcessNameAndPid()
+        {
+            var processName = string.Empty;
+            var processId = string.Empty;
+            var parts = GetProcess().Split(new[] { '(', ')' }, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length > 0)
+                processName = parts[0];
+            if (parts.Length > 1)
+                processId = parts[1];
+            return new Tuple<string, string>(processName, processId);
         }
     }
 }
