@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 
 namespace ULSStasher
@@ -17,26 +16,23 @@ namespace ULSStasher
             var elementCreator = new LogElementCreator();
             foreach (var logLine in _lineprovider.GetLines())
             {
-                if(!logLine.IsValidLine)
+                if (!logLine.IsValidLine)
                     continue;
 
-                if (logLine.IsFirstOfMultipart || logLine.IsNotMultipart)
+                if (elementCreator.HasAnything && (logLine.IsFirstOfMultipart || logLine.IsNotMultipart))
                 {
-                    if (elementCreator.HasAnything)
-                    {
-                        _lineprovider.SetLineNumber(elementCreator.GetLastLineNumber());
-                        yield return elementCreator.Create();
-                        elementCreator = new LogElementCreator();
-                    }
+                    _lineprovider.SetLineNumber(elementCreator.GetLastLineNumber());
+                    yield return elementCreator.Create();
+                    elementCreator = new LogElementCreator();
                 }
                 elementCreator.Push(logLine);
             }
+
             if (elementCreator.HasEnough)
             {
                 _lineprovider.SetLineNumber(elementCreator.GetLastLineNumber());
-                    yield return elementCreator.Create();
+                yield return elementCreator.Create();
             }
-                
         }
     }
 }

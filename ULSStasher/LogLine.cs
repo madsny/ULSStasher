@@ -36,7 +36,6 @@ namespace ULSStasher
             return default(DateTime);
         }
 
-
         private bool StartsWithContinuation
         {
             get { return GetPart(MessageIdx).StartsWith("..."); }

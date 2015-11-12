@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,8 +12,16 @@ namespace ULSStasher
             _lines = new List<LogLine>();
         }
 
-        public bool HasEnough { get { return HasAnything && !_lines.Last().EndsWithContinuation; } }
-        public bool HasAnything { get { return _lines.Count > 0; } }
+        public bool HasEnough
+        {
+            get { return HasAnything && !_lines.Last().EndsWithContinuation; }
+        }
+
+        public bool HasAnything
+        {
+            get { return _lines.Count > 0; }
+        }
+
         public int GetLastLineNumber()
         {
             return _lines.Last().Linenumber;
@@ -43,7 +50,5 @@ namespace ULSStasher
                 Message = string.Join("", _lines.Select(l => l.GetMessage().Trim('.', ' ')))
             };
         }
-
-
     }
 }

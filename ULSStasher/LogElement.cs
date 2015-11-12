@@ -14,5 +14,7 @@ namespace ULSStasher
         public string Message { get; set; }
         public string CorrelationId { get; set; }
         public string ProcessId { get; set; }
+        public string MachineName { get; set; }
+        public string FileName { get; set; }
     }
 }
