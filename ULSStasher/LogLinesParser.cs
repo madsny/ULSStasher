@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ULSStasher
 {
-    internal class LogLinesParser
+    public class LogLinesParser
     {
         private readonly LineProvider _lineprovider;
 
@@ -17,11 +17,14 @@ namespace ULSStasher
             var elementCreator = new LogElementCreator();
             foreach (var logLine in _lineprovider.GetLines())
             {
+                if(!logLine.IsValidLine)
+                    continue;
+
                 if (logLine.IsFirstOfMultipart || logLine.IsNotMultipart)
                 {
                     if (elementCreator.HasAnything)
                     {
-                        _lineprovider.SetUsedLineNumber(elementCreator.GetLastLineNumber());
+                        _lineprovider.SetLineNumber(elementCreator.GetLastLineNumber());
                         yield return elementCreator.Create();
                         elementCreator = new LogElementCreator();
                     }
@@ -30,7 +33,7 @@ namespace ULSStasher
             }
             if (elementCreator.HasEnough)
             {
-                _lineprovider.SetUsedLineNumber(elementCreator.GetLastLineNumber());
+                _lineprovider.SetLineNumber(elementCreator.GetLastLineNumber());
                     yield return elementCreator.Create();
             }
                 

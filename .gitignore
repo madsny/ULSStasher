@@ -54,6 +54,7 @@ ipch/
 
 # ReSharper is a .NET coding add-in
 _ReSharper*
+*.DotSettings
 
 # NCrunch
 *.ncrunch*
@@ -110,7 +111,6 @@ UpgradeLog*.XML
 # Local credentials
 Credentials.Dev.config
 
-PawPaw.Alloy/App_Data/
 
 # Node packages
 node_modules

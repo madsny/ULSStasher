@@ -5,55 +5,49 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using ULSStasher.Files;
 
 namespace ULSStasher
 {
     public class LineProvider
     {
         private readonly IFileSystem _fileSystem;
+        private readonly ProgressKeeper _progressKeeper;
 
         public LineProvider(IFileSystem fileSystem)
         {
             _fileSystem = fileSystem;
+            _progressKeeper = new ProgressKeeper();
         }
-
-
-        private int _lineNumber;
 
         public IEnumerable<LogLine> GetLines()
         {
             var files = _fileSystem.GetFiles(@"e:\temp\logs\");
 
-            foreach (var filename in files)
+            foreach (var fileInfo in files)
             {
+                var currentProgress = _progressKeeper.SetCurrentFile(fileInfo.FullName);
+                if(currentProgress.Done)
+                    continue;
                 int index = 0;
-                foreach (var rawLine in _fileSystem.GetLines(filename.FullName))
+                foreach (var rawLine in _fileSystem.GetLines(fileInfo))
                 {
                     index++;
-                    var line = CreateLogLine(rawLine, index);
-                    if (line != null)
-                        yield return line;
-
+                    if(index > currentProgress.LineNumber)
+                        yield return new LogLine(rawLine, index, fileInfo.Name);
                 }
             }
         }
 
-        private LogLine CreateLogLine(string line, int linenumber)
-        {
-            if (line.StartsWith("Timestamp") || string.IsNullOrWhiteSpace(line))
-                return null;
 
-            return new LogLine(line, linenumber);
-        }
-
-        public void SetUsedLineNumber(int lastLineNumber)
+        public void SetLineNumber(int lastLineNumber)
         {
-            _lineNumber = lastLineNumber;
+            _progressKeeper.SetLineNumber(lastLineNumber);
         }
 
         public void Commit()
         {
-            Console.WriteLine(_lineNumber);
+            _progressKeeper.Commit();
         }
     }
 }

@@ -48,8 +48,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileSystem.cs" />
-    <Compile Include="IFileSystem.cs" />
+    <Compile Include="Files\FileInfoWrapper.cs" />
+    <Compile Include="Files\FileSystem.cs" />
+    <Compile Include="Files\IFile.cs" />
+    <Compile Include="Files\IFileSystem.cs" />
+    <Compile Include="Files\ProgressKeeper.cs" />
+    <Compile Include="Files\ProgressRecord.cs" />
     <Compile Include="LineProvider.cs" />
     <Compile Include="LogElementCreator.cs" />
     <Compile Include="LogLine.cs" />

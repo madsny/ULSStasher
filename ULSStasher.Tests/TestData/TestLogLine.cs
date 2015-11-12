@@ -45,6 +45,11 @@ namespace ULSStasher.Tests.TestData
                 Time, Process, Tid, Area, Category, EventId, Level, Message, Correlation);
         }
 
+        public static void ResetCounter()
+        {
+            _globalcounter = 0;
+        }
+
         public const string HeaderLine =
             @"Timestamp              	Process                                 	TID   	Area                          	Category                      	EventID	Level     	Message 	Correlation";
     }

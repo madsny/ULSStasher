@@ -16,9 +16,9 @@ namespace ULSStasher.Tests
         private StubFileSystem _fileSystem;
 
         [Test]
-        public void GetLines_WithNoLinesAndNoFiles_YieldsNoLines()
+        public void GetLines_WithNoLines_YieldsNoLines()
         {
-            var lineProvider = CreateLineProvider(files: new string[0]);
+            var lineProvider = CreateLineProvider();
 
             var actual = lineProvider.GetLines();
 
@@ -36,13 +36,10 @@ namespace ULSStasher.Tests
             Assert.AreEqual(2, actual.Count());
         }
 
-        private LineProvider CreateLineProvider(IEnumerable<string> files = null, IEnumerable<string> lines = null)
+        private LineProvider CreateLineProvider(IEnumerable<string> lines = null)
         {
             _fileSystem = new StubFileSystem();
-            if (files != null)
-                _fileSystem.Files = files.Select(f => new FileInfo(f));
-            if (lines != null)
-                _fileSystem.Lines = lines;
+            _fileSystem.AddLines(lines);
             return new LineProvider(_fileSystem);
         }
     }

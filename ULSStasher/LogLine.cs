@@ -5,6 +5,7 @@ namespace ULSStasher
 {
     public class LogLine
     {
+        private readonly string _fileName;
         public int Linenumber { get; private set; }
         private readonly string[] _parts;
 
@@ -17,8 +18,9 @@ namespace ULSStasher
         public const int MessageIdx = 7;
         public const int CorrelationIdx = 8;
 
-        public LogLine(string line, int linenumber)
+        public LogLine(string line, int linenumber, string fileName)
         {
+            _fileName = fileName;
             Linenumber = linenumber;
             _parts = line.Split('\t');
         }
@@ -48,6 +50,7 @@ namespace ULSStasher
         public bool IsFirstOfMultipart { get { return !StartsWithContinuation && EndsWithContinuation; } }
         public bool IsLastOfMultipart { get { return StartsWithContinuation && !EndsWithContinuation; } }
         public bool IsNotMultipart { get { return !StartsWithContinuation && !EndsWithContinuation; } }
+        public bool IsValidLine { get { return GetTime() != default(DateTime); } }
 
         public string GetEventId() { return GetPart(EventIdIdx); }
 

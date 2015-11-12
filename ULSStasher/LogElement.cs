@@ -2,7 +2,7 @@
 
 namespace ULSStasher
 {
-    class LogElement
+    public class LogElement
     {
         public DateTime Date { get; set; }
         public string ProcessName { get; set; }
