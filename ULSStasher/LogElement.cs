@@ -1,7 +1,9 @@
 ﻿using System;
+using Nest;
 
 namespace ULSStasher
 {
+    [ElasticType]
     public class LogElement
     {
         public DateTime Date { get; set; }
@@ -12,6 +14,7 @@ namespace ULSStasher
         public string EventId { get; set; }
         public string Level { get; set; }
         public string Message { get; set; }
+        [ElasticProperty( Index = FieldIndexOption.NotAnalyzed)]
         public string CorrelationId { get; set; }
         public string ProcessId { get; set; }
         public string MachineName { get; set; }

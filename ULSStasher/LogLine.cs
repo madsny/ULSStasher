@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace ULSStasher
 {
     public class LogLine
     {
+        public static Regex LogFilenameRegEx = new Regex(@"^(?<server>.+?)\-(?<date>\d{8})\-(?<time>\d{4})\.log$", RegexOptions.Compiled);
+
         private readonly string _fileName;
         public int Linenumber { get; private set; }
         private readonly string[] _parts;
@@ -97,6 +100,11 @@ namespace ULSStasher
             return GetPart(MessageIdx);
         }
 
+        public string GetFileName()
+        {
+            return _fileName;
+        }
+
         public Tuple<string, string> GetProcessNameAndPid()
         {
             var processName = string.Empty;
@@ -107,6 +115,14 @@ namespace ULSStasher
             if (parts.Length > 1)
                 processId = parts[1];
             return new Tuple<string, string>(processName, processId);
+        }
+
+        public string GetServerName()
+        {
+            var match = LogFilenameRegEx.Match(_fileName);
+            if (match.Groups["server"].Success)
+                return match.Groups["server"].Value;
+            return "Unknown server";
         }
     }
 }

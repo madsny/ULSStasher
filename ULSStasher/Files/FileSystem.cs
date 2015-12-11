@@ -21,7 +21,12 @@ namespace ULSStasher.Files
 
         public IEnumerable<IFile> GetFiles(string folderPath)
         {
-            yield return new FileInfoWrapper(new FileInfo(@"e:\temp\logs\test.log"));
+            var noe = Directory.GetFiles(folderPath);
+            foreach (var file in noe)
+            {
+                yield return new FileInfoWrapper(new FileInfo(file));
+            }
+            
         }
     }
 }

@@ -36,6 +36,7 @@ namespace ULSStasher
         {
             var firstLine = _lines.First();
             var processnamePid = firstLine.GetProcessNameAndPid();
+            var servername = firstLine.GetServerName();
             return new LogElement
             {
                 Date = firstLine.GetTime(),
@@ -47,7 +48,9 @@ namespace ULSStasher
                 ProcessName = processnamePid.Item1,
                 ProcessId = processnamePid.Item2,
                 Tid = firstLine.GetTid(),
-                Message = string.Join("", _lines.Select(l => l.GetMessage().Trim('.', ' ')))
+                Message = string.Join("", _lines.Select(l => l.GetMessage().Trim('.', ' '))),
+                FileName = firstLine.GetFileName(),
+                MachineName = servername
             };
         }
     }
