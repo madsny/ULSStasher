@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using ULSStasher.Files;
 
 namespace ULSStasher
@@ -22,7 +17,10 @@ namespace ULSStasher
 
         public IEnumerable<LogLine> GetLines()
         {
-            var files = _fileSystem.GetFiles(@"e:\temp\logs\");
+            var files = _fileSystem
+                .GetFiles(@"e:\temp\logs\")
+                .Where(f => LogLine.LogFilenameRegEx.IsMatch(f.Name))
+                .OrderBy(f => f.LastWriteTime);
 
             foreach (var fileInfo in files)
             {
