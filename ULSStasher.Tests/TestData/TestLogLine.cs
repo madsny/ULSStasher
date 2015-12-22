@@ -2,7 +2,7 @@
 {
     internal class TestLogLine
     {
-        private static int _globalcounter = 0;
+        private static int _globalcounter;
 
         public string Time;
         public string Process;

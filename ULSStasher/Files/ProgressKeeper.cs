@@ -10,6 +10,7 @@ namespace ULSStasher.Files
 
         public ProgressKeeper()
         {
+            //read progress from ES
             _files = new List<ProgressRecord>();
         }
 
@@ -37,7 +38,7 @@ namespace ULSStasher.Files
 
         public void Commit()
         {
-            
+            //push to ElasticSearch
         }
     }
 }
